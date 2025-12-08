@@ -1,3 +1,31 @@
+/* 🎨 Palette inspirée de ta chienne
+   - Caramel : couleur principale
+   - Crème : fond
+   - Vert coussin : petites touches
+*/
+
+:root {
+  --color-bg-from: #fdf7ee;
+  --color-bg-to: #f4e4cf;
+  --color-card-bg: #fffaf2;
+
+  --color-text-main: #3c2e26;
+  --color-text-muted: #8a7a6c;
+
+  --color-accent: #d8a46c;      /* caramel */
+  --color-accent-dark: #b57f42; /* caramel plus foncé */
+  --color-accent-soft: #f2d3a5;
+
+  --color-border: #ead8c0;
+  --color-badge-bg: #f5e1c4;
+
+  --color-status-bg: #ffffff;
+  --color-danger: #d95c4b;
+  --color-secondary: #5b8bbf;   /* pour le bouton "Modifier" */
+}
+
+/* Reset & base */
+
 * {
   box-sizing: border-box;
 }
@@ -6,8 +34,9 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: linear-gradient(180deg, #f0f4ff 0%, #f7f7f7 40%, #f7f7f7 100%);
+  background: linear-gradient(180deg, var(--color-bg-from) 0%, var(--color-bg-to) 45%, #f7f7f7 100%);
   min-height: 100vh;
+  color: var(--color-text-main);
 }
 
 .app {
@@ -19,8 +48,9 @@ body {
 h1 {
   margin-top: 0;
   margin-bottom: 16px;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   text-align: center;
+  letter-spacing: 0.03em;
 }
 
 h2 {
@@ -31,12 +61,12 @@ h2 {
 /* Cartes */
 
 .card {
-  background: #ffffff;
+  background: var(--color-card-bg);
   border-radius: 14px;
   padding: 16px;
   margin-bottom: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e6e6e6;
+  border: 1px solid var(--color-border);
 }
 
 /* En-tête liste + filtres */
@@ -60,14 +90,16 @@ h2 {
 
 .filters-row label {
   white-space: nowrap;
+  color: var(--color-text-muted);
 }
 
 .filters-row select {
   padding: 4px 8px;
   border-radius: 999px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border);
   font-size: 0.85rem;
-  background: #fafafa;
+  background: #faf5ec;
+  color: var(--color-text-main);
 }
 
 /* Formulaire */
@@ -83,8 +115,9 @@ h2 {
 #trickForm select {
   padding: 9px 11px;
   border-radius: 8px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border);
   font-size: 0.95rem;
+  background: #fffdf8;
 }
 
 #trickForm textarea {
@@ -96,7 +129,7 @@ h2 {
   padding: 10px;
   border-radius: 999px;
   border: none;
-  background: #2ecc71;
+  background: var(--color-accent);
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -104,13 +137,13 @@ h2 {
 }
 
 #submitBtn:hover {
-  filter: brightness(0.95);
+  background: var(--color-accent-dark);
 }
 
 .edit-info {
   font-size: 0.85rem;
   margin: 0 0 8px;
-  color: #444;
+  color: var(--color-text-muted);
 }
 
 .btn-link {
@@ -118,7 +151,7 @@ h2 {
   border: none;
   padding: 0;
   margin-left: 8px;
-  color: #2980b9;
+  color: var(--color-secondary);
   cursor: pointer;
   font-size: 0.85rem;
 }
@@ -134,8 +167,8 @@ h2 {
 .trick {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background: #fafafa;
+  border: 1px solid var(--color-border);
+  background: #fffaf4;
 }
 
 .trick-header-row {
@@ -160,7 +193,7 @@ h2 {
 .trick-description {
   font-size: 0.95rem;
   white-space: pre-wrap;
-  color: #444;
+  color: var(--color-text-main);
 }
 
 /* Badge catégorie */
@@ -170,8 +203,8 @@ h2 {
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 0.75rem;
-  background: #ecf0f1;
-  color: #555;
+  background: var(--color-badge-bg);
+  color: var(--color-text-main);
 }
 
 /* Image du trick */
@@ -182,7 +215,7 @@ h2 {
   max-height: 130px;
   border-radius: 10px;
   object-fit: cover;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
 }
 
 /* Statut */
@@ -196,15 +229,16 @@ h2 {
 }
 
 .trick-status-row span {
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .status-select {
   padding: 4px 8px;
   border-radius: 999px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-border);
   font-size: 0.85rem;
-  background: #ffffff;
+  background: var(--color-status-bg);
+  color: var(--color-text-main);
 }
 
 /* Actions Modifier / Supprimer */
@@ -226,7 +260,7 @@ h2 {
 }
 
 .btn-secondary {
-  background: #3498db;
+  background: var(--color-secondary);
   color: white;
 }
 
@@ -235,7 +269,7 @@ h2 {
 }
 
 .btn-danger {
-  background: #e74c3c;
+  background: var(--color-danger);
   color: white;
 }
 
@@ -292,7 +326,7 @@ h2 {
 
   .trick-image {
     max-width: 100%;
-    max-height: 200px;
+    max-height: 220px;
   }
 
   #trickForm input,
