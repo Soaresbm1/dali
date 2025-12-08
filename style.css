@@ -115,6 +115,19 @@ h2 {
   color: #444;
 }
 
+/* Image du trick */
+
+.trick-image {
+  margin-top: 6px;
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* Statut */
+
 .trick-status-row {
   margin-top: 6px;
   display: flex;

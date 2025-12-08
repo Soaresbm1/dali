@@ -1,4 +1,4 @@
-// On utilise le SDK modulaire via les URLs (pas besoin d'installation)
+// SDK modulaire via URL
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore,
@@ -12,7 +12,7 @@ import {
   deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// === Config de TON projet Firebase ===
+// Config Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDvb4C14F_fTsUsgZJyjwMT8UBYO58XN2s",
   authDomain: "dali-050.firebaseapp.com",
@@ -22,14 +22,15 @@ const firebaseConfig = {
   appId: "1:1068512065598:web:07deb7f679fcaa0b39b96f",
 };
 
-// Initialisation Firebase + Firestore
+// Init
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Références DOM
+// DOM
 const form = document.getElementById("trickForm");
 const nameInput = document.getElementById("trickName");
 const descInput = document.getElementById("trickDescription");
+const imageUrlInput = document.getElementById("trickImageUrl");
 const statusInput = document.getElementById("trickStatus");
 const listEl = document.getElementById("tricksList");
 const editInfo = document.getElementById("editInfo");
@@ -37,21 +38,15 @@ const editNameSpan = document.getElementById("editName");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
 const submitBtn = document.getElementById("submitBtn");
 
-// Statuts possibles
+// Statuts
 const STATUS_OPTIONS = [
   { value: "learning", label: "Apprentissage" },
   { value: "acquired", label: "Acquis" },
 ];
 
-function statusLabel(value) {
-  const found = STATUS_OPTIONS.find((s) => s.value === value);
-  return found ? found.label : "Apprentissage";
-}
-
-// Variable pour savoir si on est en mode "ajout" ou "édition"
 let currentEditId = null;
 
-// === Fonction d'affichage de la liste ===
+// Affichage des tricks
 function renderTricks(tricks) {
   listEl.innerHTML = "";
 
@@ -82,10 +77,18 @@ function renderTricks(tricks) {
     leftPart.appendChild(title);
     leftPart.appendChild(desc);
 
+    // Image éventuelle
+    if (t.imageUrl) {
+      const img = document.createElement("img");
+      img.className = "trick-image";
+      img.src = t.imageUrl;
+      img.alt = `Illustration pour ${t.name}`;
+      leftPart.appendChild(img);
+    }
+
     const rightPart = document.createElement("div");
     rightPart.className = "trick-actions";
 
-    // Bouton modifier
     const editBtn = document.createElement("button");
     editBtn.className = "btn-secondary";
     editBtn.textContent = "Modifier";
@@ -93,7 +96,6 @@ function renderTricks(tricks) {
       enterEditMode(t);
     });
 
-    // Bouton supprimer
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "btn-danger";
     deleteBtn.textContent = "Supprimer";
@@ -153,11 +155,12 @@ function renderTricks(tricks) {
   });
 }
 
-// === Mode édition ===
+// Mode édition
 function enterEditMode(trick) {
   currentEditId = trick.id;
   nameInput.value = trick.name || "";
   descInput.value = trick.description || "";
+  imageUrlInput.value = trick.imageUrl || "";
   statusInput.value = trick.status || "learning";
 
   editNameSpan.textContent = trick.name || "";
@@ -177,7 +180,7 @@ cancelEditBtn.addEventListener("click", () => {
   exitEditMode();
 });
 
-// === Écoute en temps réel de la collection "tricks" ===
+// Firestore temps réel
 const tricksRef = collection(db, "tricks");
 const q = query(tricksRef, orderBy("name"));
 
@@ -189,12 +192,13 @@ onSnapshot(q, (snapshot) => {
   renderTricks(tricks);
 });
 
-// === Gestion du formulaire d'ajout / édition ===
+// Formulaire ajout / édition
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const name = nameInput.value.trim();
   const description = descInput.value.trim();
+  const imageUrl = imageUrlInput.value.trim();
   const status = statusInput.value || "learning";
 
   if (!name || !description) {
@@ -202,20 +206,19 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  const payload = {
+    name,
+    description,
+    status,
+    imageUrl: imageUrl || null,
+  };
+
   try {
     if (currentEditId) {
-      // Mode édition : on met à jour le document existant
-      await updateDoc(doc(db, "tricks", currentEditId), {
-        name,
-        description,
-        status,
-      });
+      await updateDoc(doc(db, "tricks", currentEditId), payload);
     } else {
-      // Mode ajout
       await addDoc(tricksRef, {
-        name,
-        description,
-        status,
+        ...payload,
         createdAt: new Date(),
       });
     }

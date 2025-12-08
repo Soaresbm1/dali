@@ -12,7 +12,7 @@
     <section class="card">
       <h2>Ajouter / modifier un trick</h2>
 
-      <!-- Petit texte qui s'affiche quand on est en mode édition -->
+      <!-- Info édition -->
       <p id="editInfo" class="edit-info" style="display: none;">
         ✏️ Modification du trick : <span id="editName"></span>
         <button id="cancelEditBtn" type="button" class="btn-link">
@@ -34,6 +34,12 @@
           rows="3"
           required
         ></textarea>
+
+        <input
+          id="trickImageUrl"
+          type="text"
+          placeholder="Lien de l'image (ex : images/assis.png)"
+        />
 
         <select id="trickStatus">
           <option value="learning">Apprentissage</option>
