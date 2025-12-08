@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Tricks de ma chienne</title>
-        <link rel="stylesheet" href="style.css" />
-        <script type="module" src="script.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title>Tricks de ma chienne</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="app">
@@ -19,12 +18,19 @@
           placeholder="Nom du trick (ex : Assis)"
           required
         />
+
         <textarea
           id="trickDescription"
           placeholder='Comment faire (ex : dire : "assis")'
           rows="3"
           required
         ></textarea>
+
+        <select id="trickStatus">
+          <option value="learning">Apprentissage</option>
+          <option value="acquired">Acquis</option>
+        </select>
+
         <button type="submit">Ajouter</button>
       </form>
     </section>
@@ -35,6 +41,6 @@
     </section>
   </main>
 
-  <!-- On charge notre JS en module -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>

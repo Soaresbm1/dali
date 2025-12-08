@@ -42,7 +42,8 @@ h2 {
 }
 
 #trickForm input,
-#trickForm textarea {
+#trickForm textarea,
+#trickForm select {
   padding: 8px 10px;
   border-radius: 6px;
   border: 1px solid #cccccc;
@@ -89,4 +90,23 @@ h2 {
   font-size: 0.95rem;
   white-space: pre-wrap;
   color: #444;
+}
+
+.trick-status-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.trick-status-row span {
+  color: #555;
+}
+
+.status-select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 0.85rem;
 }
