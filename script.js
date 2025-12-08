@@ -9,6 +9,7 @@ import {
   onSnapshot,
   updateDoc,
   doc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // === Config de TON projet Firebase ===
@@ -31,6 +32,10 @@ const nameInput = document.getElementById("trickName");
 const descInput = document.getElementById("trickDescription");
 const statusInput = document.getElementById("trickStatus");
 const listEl = document.getElementById("tricksList");
+const editInfo = document.getElementById("editInfo");
+const editNameSpan = document.getElementById("editName");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const submitBtn = document.getElementById("submitBtn");
 
 // Statuts possibles
 const STATUS_OPTIONS = [
@@ -42,6 +47,9 @@ function statusLabel(value) {
   const found = STATUS_OPTIONS.find((s) => s.value === value);
   return found ? found.label : "Apprentissage";
 }
+
+// Variable pour savoir si on est en mode "ajout" ou "édition"
+let currentEditId = null;
 
 // === Fonction d'affichage de la liste ===
 function renderTricks(tricks) {
@@ -58,6 +66,11 @@ function renderTricks(tricks) {
     const div = document.createElement("div");
     div.className = "trick";
 
+    const headerRow = document.createElement("div");
+    headerRow.className = "trick-header-row";
+
+    const leftPart = document.createElement("div");
+
     const title = document.createElement("div");
     title.className = "trick-title";
     title.textContent = t.name;
@@ -65,6 +78,41 @@ function renderTricks(tricks) {
     const desc = document.createElement("div");
     desc.className = "trick-description";
     desc.textContent = t.description;
+
+    leftPart.appendChild(title);
+    leftPart.appendChild(desc);
+
+    const rightPart = document.createElement("div");
+    rightPart.className = "trick-actions";
+
+    // Bouton modifier
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn-secondary";
+    editBtn.textContent = "Modifier";
+    editBtn.addEventListener("click", () => {
+      enterEditMode(t);
+    });
+
+    // Bouton supprimer
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn-danger";
+    deleteBtn.textContent = "Supprimer";
+    deleteBtn.addEventListener("click", async () => {
+      const ok = confirm(`Supprimer le trick "${t.name}" ?`);
+      if (!ok) return;
+      try {
+        await deleteDoc(doc(db, "tricks", t.id));
+      } catch (err) {
+        console.error("Erreur lors de la suppression :", err);
+        alert("Impossible de supprimer ce trick.");
+      }
+    });
+
+    rightPart.appendChild(editBtn);
+    rightPart.appendChild(deleteBtn);
+
+    headerRow.appendChild(leftPart);
+    headerRow.appendChild(rightPart);
 
     const statusRow = document.createElement("div");
     statusRow.className = "trick-status-row";
@@ -98,13 +146,36 @@ function renderTricks(tricks) {
     statusRow.appendChild(labelSpan);
     statusRow.appendChild(select);
 
-    div.appendChild(title);
-    div.appendChild(desc);
+    div.appendChild(headerRow);
     div.appendChild(statusRow);
 
     listEl.appendChild(div);
   });
 }
+
+// === Mode édition ===
+function enterEditMode(trick) {
+  currentEditId = trick.id;
+  nameInput.value = trick.name || "";
+  descInput.value = trick.description || "";
+  statusInput.value = trick.status || "learning";
+
+  editNameSpan.textContent = trick.name || "";
+  editInfo.style.display = "block";
+  submitBtn.textContent = "Enregistrer";
+}
+
+function exitEditMode() {
+  currentEditId = null;
+  form.reset();
+  statusInput.value = "learning";
+  editInfo.style.display = "none";
+  submitBtn.textContent = "Ajouter";
+}
+
+cancelEditBtn.addEventListener("click", () => {
+  exitEditMode();
+});
 
 // === Écoute en temps réel de la collection "tricks" ===
 const tricksRef = collection(db, "tricks");
@@ -118,7 +189,7 @@ onSnapshot(q, (snapshot) => {
   renderTricks(tricks);
 });
 
-// === Gestion du formulaire d'ajout ===
+// === Gestion du formulaire d'ajout / édition ===
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -132,17 +203,26 @@ form.addEventListener("submit", async (event) => {
   }
 
   try {
-    await addDoc(tricksRef, {
-      name,
-      description,
-      status,
-      createdAt: new Date(),
-    });
+    if (currentEditId) {
+      // Mode édition : on met à jour le document existant
+      await updateDoc(doc(db, "tricks", currentEditId), {
+        name,
+        description,
+        status,
+      });
+    } else {
+      // Mode ajout
+      await addDoc(tricksRef, {
+        name,
+        description,
+        status,
+        createdAt: new Date(),
+      });
+    }
 
-    form.reset();
-    statusInput.value = "learning";
+    exitEditMode();
   } catch (err) {
-    console.error("Erreur lors de l'ajout du trick :", err);
-    alert("Impossible d'ajouter le trick (regarde la console).");
+    console.error("Erreur lors de l'enregistrement du trick :", err);
+    alert("Impossible d'enregistrer le trick (regarde la console).");
   }
 });

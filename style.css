@@ -50,7 +50,7 @@ h2 {
   font-size: 0.95rem;
 }
 
-#trickForm button {
+#submitBtn {
   margin-top: 8px;
   padding: 10px;
   border-radius: 6px;
@@ -62,8 +62,24 @@ h2 {
   cursor: pointer;
 }
 
-#trickForm button:hover {
+#submitBtn:hover {
   filter: brightness(0.95);
+}
+
+.edit-info {
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+  color: #444;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  color: #2980b9;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
 
 /* Liste des tricks */
@@ -79,6 +95,13 @@ h2 {
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   background: #fafafa;
+}
+
+.trick-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .trick-title {
@@ -109,4 +132,39 @@ h2 {
   border-radius: 6px;
   border: 1px solid #cccccc;
   font-size: 0.85rem;
+}
+
+/* Actions Modifier / Supprimer */
+
+.trick-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.btn-secondary,
+.btn-danger {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-secondary:hover {
+  filter: brightness(0.95);
+}
+
+.btn-danger {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  filter: brightness(0.95);
 }

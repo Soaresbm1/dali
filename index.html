@@ -10,7 +10,16 @@
     <h1>Liste des tricks</h1>
 
     <section class="card">
-      <h2>Ajouter un trick</h2>
+      <h2>Ajouter / modifier un trick</h2>
+
+      <!-- Petit texte qui s'affiche quand on est en mode édition -->
+      <p id="editInfo" class="edit-info" style="display: none;">
+        ✏️ Modification du trick : <span id="editName"></span>
+        <button id="cancelEditBtn" type="button" class="btn-link">
+          Annuler
+        </button>
+      </p>
+
       <form id="trickForm">
         <input
           id="trickName"
@@ -31,7 +40,7 @@
           <option value="acquired">Acquis</option>
         </select>
 
-        <button type="submit">Ajouter</button>
+        <button id="submitBtn" type="submit">Ajouter</button>
       </form>
     </section>
 
