@@ -39,6 +39,7 @@ const editNameSpan = document.getElementById("editName");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
 const submitBtn = document.getElementById("submitBtn");
 const filterCategorySelect = document.getElementById("filterCategory");
+const filterStatusSelect = document.getElementById("filterStatus");
 
 // Statuts
 const STATUS_OPTIONS = [
@@ -63,6 +64,7 @@ function categoryLabel(value) {
 let currentEditId = null;
 let currentTricks = [];
 let currentCategoryFilter = "all";
+let currentStatusFilter = "all";
 
 // Affichage des tricks
 function renderTricks(tricks) {
@@ -183,13 +185,19 @@ function renderTricks(tricks) {
   });
 }
 
-// Appliquer le filtre catégorie
+// Appliquer les filtres (catégorie + statut)
 function applyFilterAndRender() {
   let toRender = currentTricks;
 
   if (currentCategoryFilter !== "all") {
-    toRender = currentTricks.filter(
+    toRender = toRender.filter(
       (t) => (t.category || "other") === currentCategoryFilter
+    );
+  }
+
+  if (currentStatusFilter !== "all") {
+    toRender = toRender.filter(
+      (t) => (t.status || "learning") === currentStatusFilter
     );
   }
 
@@ -236,9 +244,14 @@ onSnapshot(q, (snapshot) => {
   applyFilterAndRender();
 });
 
-// Filtre catégorie
+// Filtres
 filterCategorySelect.addEventListener("change", (e) => {
   currentCategoryFilter = e.target.value;
+  applyFilterAndRender();
+});
+
+filterStatusSelect.addEventListener("change", (e) => {
+  currentStatusFilter = e.target.value;
   applyFilterAndRender();
 });
 
