@@ -38,8 +38,16 @@
         <input
           id="trickImageUrl"
           type="text"
-          placeholder="Lien de l'image (ex : images/assis.png)"
+          placeholder="Lien de l'image (optionnel)"
         />
+
+        <select id="trickCategory">
+          <option value="obedience">Obéissance</option>
+          <option value="fun">Fun / Tricks</option>
+          <option value="sport">Sport / Agility</option>
+          <option value="useful">Utile au quotidien</option>
+          <option value="other">Autre</option>
+        </select>
 
         <select id="trickStatus">
           <option value="learning">Apprentissage</option>
@@ -51,7 +59,22 @@
     </section>
 
     <section class="card">
-      <h2>Tricks enregistrés</h2>
+      <div class="card-header-row">
+        <h2>Tricks enregistrés</h2>
+
+        <div class="filters-row">
+          <label for="filterCategory">Catégorie :</label>
+          <select id="filterCategory">
+            <option value="all">Toutes</option>
+            <option value="obedience">Obéissance</option>
+            <option value="fun">Fun / Tricks</option>
+            <option value="sport">Sport / Agility</option>
+            <option value="useful">Utile au quotidien</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
+      </div>
+
       <div id="tricksList"></div>
     </section>
   </main>

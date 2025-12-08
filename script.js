@@ -31,12 +31,14 @@ const form = document.getElementById("trickForm");
 const nameInput = document.getElementById("trickName");
 const descInput = document.getElementById("trickDescription");
 const imageUrlInput = document.getElementById("trickImageUrl");
+const categoryInput = document.getElementById("trickCategory");
 const statusInput = document.getElementById("trickStatus");
 const listEl = document.getElementById("tricksList");
 const editInfo = document.getElementById("editInfo");
 const editNameSpan = document.getElementById("editName");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
 const submitBtn = document.getElementById("submitBtn");
+const filterCategorySelect = document.getElementById("filterCategory");
 
 // Statuts
 const STATUS_OPTIONS = [
@@ -44,7 +46,23 @@ const STATUS_OPTIONS = [
   { value: "acquired", label: "Acquis" },
 ];
 
+// Catégories
+const CATEGORY_OPTIONS = [
+  { value: "obedience", label: "Obéissance" },
+  { value: "fun", label: "Fun / Tricks" },
+  { value: "sport", label: "Sport / Agility" },
+  { value: "useful", label: "Utile au quotidien" },
+  { value: "other", label: "Autre" },
+];
+
+function categoryLabel(value) {
+  const found = CATEGORY_OPTIONS.find((c) => c.value === value);
+  return found ? found.label : "Autre";
+}
+
 let currentEditId = null;
+let currentTricks = [];
+let currentCategoryFilter = "all";
 
 // Affichage des tricks
 function renderTricks(tricks) {
@@ -66,15 +84,25 @@ function renderTricks(tricks) {
 
     const leftPart = document.createElement("div");
 
+    const titleRow = document.createElement("div");
+    titleRow.className = "trick-title-row";
+
     const title = document.createElement("div");
     title.className = "trick-title";
     title.textContent = t.name;
+
+    const catBadge = document.createElement("span");
+    catBadge.className = "trick-category-badge";
+    catBadge.textContent = categoryLabel(t.category || "other");
+
+    titleRow.appendChild(title);
+    titleRow.appendChild(catBadge);
 
     const desc = document.createElement("div");
     desc.className = "trick-description";
     desc.textContent = t.description;
 
-    leftPart.appendChild(title);
+    leftPart.appendChild(titleRow);
     leftPart.appendChild(desc);
 
     // Image éventuelle
@@ -155,12 +183,26 @@ function renderTricks(tricks) {
   });
 }
 
+// Appliquer le filtre catégorie
+function applyFilterAndRender() {
+  let toRender = currentTricks;
+
+  if (currentCategoryFilter !== "all") {
+    toRender = currentTricks.filter(
+      (t) => (t.category || "other") === currentCategoryFilter
+    );
+  }
+
+  renderTricks(toRender);
+}
+
 // Mode édition
 function enterEditMode(trick) {
   currentEditId = trick.id;
   nameInput.value = trick.name || "";
   descInput.value = trick.description || "";
   imageUrlInput.value = trick.imageUrl || "";
+  categoryInput.value = trick.category || "other";
   statusInput.value = trick.status || "learning";
 
   editNameSpan.textContent = trick.name || "";
@@ -171,6 +213,7 @@ function enterEditMode(trick) {
 function exitEditMode() {
   currentEditId = null;
   form.reset();
+  categoryInput.value = "obedience";
   statusInput.value = "learning";
   editInfo.style.display = "none";
   submitBtn.textContent = "Ajouter";
@@ -189,7 +232,14 @@ onSnapshot(q, (snapshot) => {
   snapshot.forEach((docSnap) => {
     tricks.push({ id: docSnap.id, ...docSnap.data() });
   });
-  renderTricks(tricks);
+  currentTricks = tricks;
+  applyFilterAndRender();
+});
+
+// Filtre catégorie
+filterCategorySelect.addEventListener("change", (e) => {
+  currentCategoryFilter = e.target.value;
+  applyFilterAndRender();
 });
 
 // Formulaire ajout / édition
@@ -199,6 +249,7 @@ form.addEventListener("submit", async (event) => {
   const name = nameInput.value.trim();
   const description = descInput.value.trim();
   const imageUrl = imageUrlInput.value.trim();
+  const category = categoryInput.value || "other";
   const status = statusInput.value || "learning";
 
   if (!name || !description) {
@@ -210,6 +261,7 @@ form.addEventListener("submit", async (event) => {
     name,
     description,
     status,
+    category,
     imageUrl: imageUrl || null,
   };
 

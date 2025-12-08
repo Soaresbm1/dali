@@ -33,6 +33,30 @@ h2 {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
+/* En-tête liste + filtres */
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.filters-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.filters-row select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 0.85rem;
+}
+
 /* Formulaire */
 
 #trickForm {
@@ -104,6 +128,12 @@ h2 {
   gap: 8px;
 }
 
+.trick-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .trick-title {
   font-weight: 600;
   margin-bottom: 4px;
@@ -113,6 +143,17 @@ h2 {
   font-size: 0.95rem;
   white-space: pre-wrap;
   color: #444;
+}
+
+/* Badge catégorie */
+
+.trick-category-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #ecf0f1;
+  color: #555;
 }
 
 /* Image du trick */
