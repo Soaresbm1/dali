@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Tricks de ma chienne</title>
+        <link rel="stylesheet" href="style.css" />
+        <script type="module" src="script.js"></script>
+</head>
+<body>
+  <main class="app">
+    <h1>Liste des tricks</h1>
+
+    <section class="card">
+      <h2>Ajouter un trick</h2>
+      <form id="trickForm">
+        <input
+          id="trickName"
+          type="text"
+          placeholder="Nom du trick (ex : Assis)"
+          required
+        />
+        <textarea
+          id="trickDescription"
+          placeholder='Comment faire (ex : dire : "assis")'
+          rows="3"
+          required
+        ></textarea>
+        <button type="submit">Ajouter</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Tricks enregistrés</h2>
+      <div id="tricksList"></div>
+    </section>
+  </main>
+
+  <!-- On charge notre JS en module -->
+</body>
+</html>
