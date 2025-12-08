@@ -58,6 +58,43 @@ h2 {
   font-size: 1.1rem;
 }
 
+/* Mémo pédagogique */
+.memo {
+  background: var(--color-accent-soft);
+  border-left: 6px solid var(--color-accent);
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.memo h3 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  color: var(--color-accent-dark);
+}
+
+.memo p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  line-height: 1.45;
+}
+
+/* Version mobile */
+@media (max-width: 600px) {
+  .memo {
+    padding: 12px 14px;
+  }
+  .memo h3 {
+    font-size: 1rem;
+  }
+  .memo p {
+    font-size: 0.85rem;
+  }
+}
+
+
 /* Cartes */
 
 .card {
