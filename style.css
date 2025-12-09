@@ -372,3 +372,41 @@ h2 {
     font-size: 0.9rem;
   }
 }
+
+.trick-card p,
+.trick-card li {
+    font-size: 16px !important;
+    line-height: 1.4;
+}
+
+/* Donner un rendu moins "dézoomé" sur téléphone */
+@media (max-width: 600px) {
+
+    body {
+        zoom: 1.06; /* léger zoom pour rendre tout plus lisible */
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+
+    button {
+        font-size: 17px !important;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .trick-card {
+        padding: 14px;
+    }
+
+    .trick-card img {
+        width: 110px;
+    }
+}
